@@ -129,7 +129,7 @@ public class SecureZoneZone {
 	 * @return string representation
 	 */
 	public String dump() {
-		return String.format("%s, %d,%d,%d,%d,%d,%d", ztype.toString(),
+		return String.format("%s,%d,%d,%d,%d,%d,%d", ztype.toString(),
 				vmin.getX(), vmin.getY(), vmin.getZ(), vmax.getX(),
 				vmax.getY(), vmax.getZ());
 	}
