@@ -1,0 +1,74 @@
+name: SecureZone
+version: '0.5'
+author: IBCodin
+description: Create and monitor secure zones, 
+  denying access to players without the proper permission
+main: me.ibcodin.plugins.securezone.SecureZone
+database: false
+startup: postworld
+depend: [WorldEdit]
+commands:
+    securezone:
+        description: Provide plugin help
+        usage: /<command>
+        aliases: [sz, szhelp, securezonehelp]
+    securezonelist:
+        description: Generate a SecureZone listing
+        usage: /<command> [world]
+          You may optionally include the world to list zones for
+        aliases: [szl, szlist]
+        permission: securezone.list
+    securezonecreate:
+        description: Create a new SecureZone
+        usage: /<command> <zonename> [type]
+          zonename is the one-word name of a zone
+          type is keepout or keepin with keepout the default 
+        aliases: [szc, szcreate]
+        permission: securezone.create
+    securezonedelete:
+        description: Delete an existing SecureZone
+        usage: /<command> <zonename>
+        aliases: [szd, szdelete]
+        permission: securezone.delete
+    securezonemodify:
+        description: Modify the type of an existing zone
+        usage: /<command> <zonename> <type>
+        aliases: [szm, szmodify]
+        permission: securezone.modify
+    securezonevisit:
+        description: Visit an existing SecureZone by name
+        usage: /<command> <zonename>
+        aliases: [szv, szvisit]
+        permission: securezone.visit
+        
+permissions:
+    securezone.admin:
+        description: Gives admin access to SecureZone
+        children:
+            securezone.list: true
+            securezone.create: true
+            securezone.delete: true
+            securezone.modify: true
+            securezone.visit: true
+            securezone.ignorezones: true
+    securezone.create:
+        description: Create SecureZone(s)
+        default: op
+    securezone.delete:
+        description: Delete SecureZone(s)
+        default: op
+    securezone.list:
+        description: List SecureZone(s)
+        default: op
+    securezone.modify:
+        description: Modify the type of SecureZone(s)
+        default: op
+    securezone.visit:
+        description: Visit a SecureZone by name
+        default: op
+    securezone.ignorezones:
+        description: Ignore SecureZone boundaries
+        default: op
+    securezone.samplezone:
+        description: Allow a player to pass through the zone named 'samplezone' 
+        default: false
