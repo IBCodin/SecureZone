@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.ibcodin.plugins.securezone</groupId>
     <artifactId>SecureZone</artifactId>
-    <version>0.5</version>
+    <version>0.51</version>
     <name>SecureZone</name>
     <repositories>
         <repository>

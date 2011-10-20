@@ -1,5 +1,5 @@
 name: SecureZone
-version: '0.5'
+version: '0.51'
 author: IBCodin
 description: Create and monitor secure zones, 
   denying access to players without the proper permission

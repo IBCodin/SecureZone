@@ -224,7 +224,7 @@ public class SecureZone extends JavaPlugin {
 							// update the config
 							final SecureZoneWorld world = getZoneWorld(szone
 									.getWorld());
-							zoneMap.put(szone.getName(), szone);
+							zoneMap.put(szone.getName().toLowerCase(), szone);
 							world.addZone(szone);
 						} else {
 							log(Level.WARNING, zonename + ": improperly formed");

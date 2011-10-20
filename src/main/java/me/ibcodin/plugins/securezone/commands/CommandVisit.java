@@ -36,7 +36,7 @@ public class CommandVisit implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		// TODO Auto-generated method stub
+		
 		if (sender instanceof Player) {
 			final Player psender = (Player) sender;
 
