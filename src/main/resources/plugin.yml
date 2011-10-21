@@ -1,8 +1,7 @@
 name: SecureZone
-version: '0.51'
+version: '0.6'
 author: IBCodin
-description: Create and monitor secure zones, 
-  denying access to players without the proper permission
+description: Restrict players to or from zones 
 main: me.ibcodin.plugins.securezone.SecureZone
 database: false
 startup: postworld

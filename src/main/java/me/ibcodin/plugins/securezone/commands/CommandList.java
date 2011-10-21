@@ -1,11 +1,11 @@
 package me.ibcodin.plugins.securezone.commands;
 
+import java.util.EnumMap;
 import java.util.Set;
-import java.util.logging.Level;
 
 import me.ibcodin.plugins.securezone.SecureZone;
 import me.ibcodin.plugins.securezone.SecureZoneZone;
-import me.ibcodin.plugins.securezone.SecureZoneZone.ZoneType;
+import me.ibcodin.plugins.securezone.ZoneType;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -64,30 +64,25 @@ public class CommandList implements CommandExecutor {
 	private void listWorld(CommandSender sender, String worldname) {
 		sender.sendMessage(ChatColor.RED + worldname + ":");
 
-		final StringBuilder kizones = new StringBuilder();
-		final StringBuilder kozones = new StringBuilder();
+		final ZoneType[] ztypes = ZoneType.values();
+		final EnumMap<ZoneType, StringBuilder> zones = new EnumMap<ZoneType, StringBuilder>(
+				ZoneType.class);
+
+		for (final ZoneType zti : ztypes) {
+			zones.put(zti, new StringBuilder());
+		}
 
 		for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
 				.getList()) {
-			if (zone.getType() == ZoneType.KEEPIN) {
-				kizones.append(zone.getName() + ", ");
-			} else if (zone.getType() == ZoneType.KEEPOUT) {
-				kozones.append(zone.getName() + ", ");
-			} else {
-				plugin.log(Level.WARNING,
-						"Unknown ZoneType for Zone " + zone.getName());
+			zones.get(zone.getType()).append(zone.getName() + ", ");
+		}
+
+		for (final ZoneType zti : ztypes) {
+			final StringBuilder sti = zones.get(zti);
+			if (sti.length() > 2) {
+				sti.setLength(sti.length() - 2);
+				sender.sendMessage(zti.getPretty() + ": " + sti.toString());
 			}
 		}
-		if (kizones.length() > 0) {
-			kizones.setLength(kizones.length() - 2);
-			sender.sendMessage(ChatColor.WHITE + "KeepIn: "
-					+ kizones.toString());
-		}
-		if (kozones.length() > 0) {
-			kozones.setLength(kozones.length() - 2);
-			sender.sendMessage(ChatColor.WHITE + "KeepOut: "
-					+ kozones.toString());
-		}
 	}
-
 }

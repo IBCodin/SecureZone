@@ -3,8 +3,6 @@
  */
 package me.ibcodin.plugins.securezone;
 
-import me.ibcodin.plugins.securezone.SecureZoneZone.ZoneType;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;

@@ -4,24 +4,9 @@
 package me.ibcodin.plugins.securezone;
 
 /**
- * @author IBCodin
- * Represents a single SecureZone 
+ * @author IBCodin Represents a single SecureZone
  */
 public class SecureZoneZone {
-
-	/**
-	 * Enumeratioon of zone types
-	 */
-	public enum ZoneType {
-		/**
-		 * Zones the keep players out
-		 */
-		KEEPOUT,
-		/**
-		 * Zones that keep players in
-		 */
-		KEEPIN;
-	};
 
 	private String zname;
 	private String wname;
@@ -106,7 +91,7 @@ public class SecureZoneZone {
 
 		int fi = 0;
 		if (fields.length == 7) {
-			ztype = ZoneType.valueOf(fields[0]);
+			ztype = ZoneType.valueOf(fields[0].toUpperCase());
 			fi = 1;
 		} else {
 			ztype = ZoneType.KEEPOUT;
@@ -178,12 +163,14 @@ public class SecureZoneZone {
 
 	/**
 	 * Change the type of a zone
-	 * @param newtype The type to change to
+	 * 
+	 * @param newtype
+	 *            The type to change to
 	 */
 	public void changeType(ZoneType newtype) {
 		ztype = newtype;
 	}
-	
+
 	/**
 	 * @return the vector (point) at the center of the zone
 	 */

@@ -128,10 +128,11 @@ public class SecureZone extends JavaPlugin {
 		world.removeZone(zone);
 		zoneMap.remove(zone.getName().toLowerCase());
 
-//		getConfig().set("worlds." + zone.getWorld() + "." + zone.getName(), null);
+		// getConfig().set("worlds." + zone.getWorld() + "." + zone.getName(),
+		// null);
 		if (world.isEmpty()) {
 			zoneWorldMap.remove(zone.getWorld());
-//			getConfig().set("worlds." + zone.getWorld(), null);
+			// getConfig().set("worlds." + zone.getWorld(), null);
 		}
 
 		// TODO: Replace the hack below with the code above when the
@@ -144,14 +145,18 @@ public class SecureZone extends JavaPlugin {
 		}
 		saveConfig();
 	}
-	
+
 	/**
 	 * Update the configuration with the modified zone
-	 * @param zone the zone which has been modified
+	 * 
+	 * @param zone
+	 *            the zone which has been modified
 	 */
 	public void updateZone(SecureZoneZone zone) {
-		// Not testing for world configuration -- this should be an existing zone
-		getConfig().set("worlds." + zone.getWorld() + "." + zone.getName(), zone.dump());
+		// Not testing for world configuration -- this should be an existing
+		// zone
+		getConfig().set("worlds." + zone.getWorld() + "." + zone.getName(),
+				zone.dump());
 	}
 
 	/**

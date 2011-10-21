@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 import me.ibcodin.plugins.securezone.SecureZone;
 import me.ibcodin.plugins.securezone.SecureZoneZone;
-import me.ibcodin.plugins.securezone.SecureZoneZone.ZoneType;
+import me.ibcodin.plugins.securezone.ZoneType;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -80,17 +80,11 @@ public class CommandCreate implements CommandExecutor {
 
 		if (args.length > 1) {
 			try {
-				ztype = ZoneType.valueOf(args[1]);
+				ztype = ZoneType.valueOf(args[1].toUpperCase());
 			} catch (final IllegalArgumentException ee) {
-				final StringBuilder ztm = new StringBuilder(
-						"Invalid zone type. Use one of: ");
-
-				for (final ZoneType zt : ZoneType.values()) {
-					ztm.append(zt.toString());
-					ztm.append(", ");
-				}
-				ztm.setLength(ztm.length() - 2);
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + ztm.toString());
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + 
+						"Invalid zone type. Use one of: " + 
+						ZoneType.getPrettyList());
 				return false;
 			}
 		}
