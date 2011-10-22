@@ -23,14 +23,14 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.Region;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezonecreate
  * 
- *         CommandExecutor for /securezonecreate
+ * @author IBCodin
  */
 public class CommandCreate implements CommandExecutor {
 
-	protected SecureZone plugin = null;
-	protected WorldEditAPI weapi = null;
+	private SecureZone plugin = null;
+	private WorldEditAPI weapi = null;
 
 	/**
 	 * @param plugin
@@ -82,9 +82,9 @@ public class CommandCreate implements CommandExecutor {
 			try {
 				ztype = ZoneType.valueOf(args[1].toUpperCase());
 			} catch (final IllegalArgumentException ee) {
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + 
-						"Invalid zone type. Use one of: " + 
-						ZoneType.getPrettyList());
+				sender.sendMessage(ChatColor.LIGHT_PURPLE
+						+ "Invalid zone type. Use one of: "
+						+ ZoneType.getPrettyList());
 				return false;
 			}
 		}

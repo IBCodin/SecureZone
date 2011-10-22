@@ -3,6 +3,7 @@
  */
 package me.ibcodin.plugins.securezone;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
@@ -12,17 +13,17 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 /**
- * @author IBCodin
+ * Listener for player-related events
  * 
- *         Listener for player-related events
+ * @author IBCodin
  */
 public class SecureZonePlayerListener extends PlayerListener {
 
 	private final SecureZone plugin;
 
-	final protected String zoneIgnorePermission = new String(
+	final private String zoneIgnorePermission = new String(
 			"securezone.ignorezones");
-	final protected String zonePrefix = new String("securezone.");
+	final private String zonePrefix = new String("securezone.");
 
 	// Additional permissions:
 
@@ -65,6 +66,9 @@ public class SecureZonePlayerListener extends PlayerListener {
 		final IntVector tvec = new IntVector(to.getBlockX(), to.getBlockY(),
 				to.getBlockZ());
 
+		// Vector velocity = ply.getVelocity();
+		// ply.setVelocity(velocity);
+
 		if (fworld != tworld) {
 			// the from and to worlds are different
 			rval = testFromWorld(ply, fworld, fvec)
@@ -100,6 +104,8 @@ public class SecureZonePlayerListener extends PlayerListener {
 					if (zone.zoneContains(tvec)) {
 						final String perm = zonePrefix.concat(zone.getName());
 						if (!player.hasPermission(perm)) {
+							player.sendMessage(ChatColor.LIGHT_PURPLE
+									+ "Zone Entry Not Authorized");
 							rval = true;
 							break;
 						}
@@ -134,6 +140,8 @@ public class SecureZonePlayerListener extends PlayerListener {
 					if (zone.zoneContains(fvec)) {
 						final String perm = zonePrefix.concat(zone.getName());
 						if (!player.hasPermission(perm)) {
+							player.sendMessage(ChatColor.LIGHT_PURPLE
+									+ "Zone Exit Not Authorized");
 							rval = true;
 							break;
 						}
@@ -175,6 +183,8 @@ public class SecureZonePlayerListener extends PlayerListener {
 					if (!player.hasPermission(perm)) {
 						// plugin.log(Level.INFO,ply.getDisplayName() +
 						// ": Failed: " + perm);
+						player.sendMessage(ChatColor.LIGHT_PURPLE
+								+ "Zone Exit Not Authorized");
 						rval = true;
 						break;
 					}
@@ -185,6 +195,8 @@ public class SecureZonePlayerListener extends PlayerListener {
 					if (!player.hasPermission(perm)) {
 						// plugin.log(Level.INFO,ply.getDisplayName() +
 						// ": Failed: " + perm);
+						player.sendMessage(ChatColor.LIGHT_PURPLE
+								+ "Zone Entry Not Authorized");
 						rval = true;
 						break;
 					}
@@ -198,7 +210,14 @@ public class SecureZonePlayerListener extends PlayerListener {
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if (!event.getPlayer().hasPermission(zoneIgnorePermission)) {
 			if (testZones(event.getPlayer(), event.getFrom(), event.getTo())) {
-				event.setCancelled(true);
+				// For move events -- relocate them to the center of the block
+				// they came from
+				final Location newloc = event.getFrom();
+				newloc.setX(newloc.getBlockX() + 0.5);
+				newloc.setY(newloc.getBlockY());
+				newloc.setZ(newloc.getBlockZ() + 0.5);
+				event.setTo(newloc);
+				// event.setCancelled(true);
 			}
 		}
 	}
@@ -207,6 +226,12 @@ public class SecureZonePlayerListener extends PlayerListener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		if (!event.getPlayer().hasPermission(zoneIgnorePermission)) {
 			if (testZones(event.getPlayer(), event.getFrom(), event.getTo())) {
+				// Location newloc = event.getFrom();
+				// newloc.setX(newloc.getBlockX() + 0.5);
+				// newloc.setY(newloc.getBlockY());
+				// newloc.setZ(newloc.getBlockZ() + 0.5);
+				// event.setTo(newloc);
+				// For teleport events, cancel and leave them where they were
 				event.setCancelled(true);
 			}
 		}

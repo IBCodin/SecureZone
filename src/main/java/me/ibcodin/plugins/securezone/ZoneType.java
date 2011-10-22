@@ -4,9 +4,9 @@
 package me.ibcodin.plugins.securezone;
 
 /**
- * @author IBCodin
+ * Enumeration of zone types
  * 
- *         Enumeration of zone types
+ * @author IBCodin
  */
 public enum ZoneType {
 
@@ -33,13 +33,13 @@ public enum ZoneType {
 	public String getPretty() {
 		return pretty;
 	}
-	
+
 	/**
 	 * @return String with list of zone types
 	 */
 	public static String getPrettyList() {
-		StringBuilder bld = new StringBuilder();
-		for (ZoneType zti : values()) {
+		final StringBuilder bld = new StringBuilder();
+		for (final ZoneType zti : values()) {
 			bld.append(zti.pretty + ", ");
 		}
 		bld.setLength(bld.length() - 2);

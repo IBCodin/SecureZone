@@ -58,4 +58,4 @@ For KEEPOUT zones this permission is required to enter the zone.
 Should you be so inclined, the source for the plugin is on [GitHub](https://github.com/IBCodin/SecureZone "SecureZone on GitHub").
 
 The plugin is built with Maven.
-I've been using: `mvn clean package install`
+

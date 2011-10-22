@@ -4,10 +4,10 @@
 package me.ibcodin.plugins.securezone;
 
 /**
- * @author IBCodin
+ * This is an integer based 3D point. integers are used to speed calculations
+ * and comparisons.
  * 
- *         This is an integer based 3D point integers are used to speed
- *         calculations and comparisons
+ * @author IBCodin
  */
 public class IntVector {
 

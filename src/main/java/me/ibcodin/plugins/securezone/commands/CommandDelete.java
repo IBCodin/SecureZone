@@ -10,13 +10,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezonedelete
  * 
- *         CommandExecutor for /securezonedelete
+ * @author IBCodin
  */
 public class CommandDelete implements CommandExecutor {
 
-	protected SecureZone plugin = null;
+	private SecureZone plugin = null;
 
 	/**
 	 * @param plugin

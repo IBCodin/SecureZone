@@ -18,9 +18,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * @author IBCodin
+ * Base class for the SecureZone plugin
  * 
- *         Base class for the SecureZone plugin
+ * @author IBCodin
  */
 public class SecureZone extends JavaPlugin {
 
@@ -28,7 +28,7 @@ public class SecureZone extends JavaPlugin {
 
 	private final HashMap<String, SecureZoneZone> zoneMap = new HashMap<String, SecureZoneZone>();
 
-	protected Logger logger = Logger.getLogger("Minecraft.SecureZone");
+	private final Logger logger = Logger.getLogger("Minecraft.SecureZone");
 
 	/**
 	 * This list of words maps to 'already defined' permissions so these would
@@ -243,7 +243,7 @@ public class SecureZone extends JavaPlugin {
 
 		saveConfig();
 
-		getCommand("securezone").setExecutor(new CommandHelp(this));
+		getCommand("securezone").setExecutor(new CommandHelp());
 		getCommand("securezonecreate").setExecutor(new CommandCreate(this));
 		getCommand("securezonedelete").setExecutor(new CommandDelete(this));
 		getCommand("securezonelist").setExecutor(new CommandList(this));

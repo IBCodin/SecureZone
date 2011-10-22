@@ -3,28 +3,21 @@
  */
 package me.ibcodin.plugins.securezone.commands;
 
-import me.ibcodin.plugins.securezone.SecureZone;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezone (the help)
  * 
- *         CommandExecutor for /securezone (the help)
+ * @author IBCodin
  */
 public class CommandHelp implements org.bukkit.command.CommandExecutor {
 
-	protected SecureZone plugin = null;
-
 	/**
-	 * @param plugin
-	 *            Reference to SecureZone plugin
 	 */
-	public CommandHelp(SecureZone plugin) {
-		this.plugin = plugin;
+	public CommandHelp() {
 	}
 
 	@Override
@@ -41,7 +34,7 @@ public class CommandHelp implements org.bukkit.command.CommandExecutor {
 				"Generate help list"));
 
 		if (sender.hasPermission("securezone.list")) {
-			sender.sendMessage(String.format(fmt, "/securezonelist",
+			sender.sendMessage(String.format(fmt, "/securezonelist [world]",
 					"List the currently defined zones"));
 		}
 

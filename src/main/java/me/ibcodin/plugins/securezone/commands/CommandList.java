@@ -13,13 +13,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezonelist
  * 
- *         CommandExecutor for /securezonelist
+ * @author IBCodin
  */
 public class CommandList implements CommandExecutor {
 
-	protected SecureZone plugin = null;
+	private SecureZone plugin = null;
 
 	/**
 	 * Implements the command /securezonelist

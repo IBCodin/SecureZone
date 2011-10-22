@@ -15,13 +15,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezonemodify
  * 
- *         CommandExecutor for /securezonemodify
+ * @author IBCodin
  */
 public class CommandModify implements CommandExecutor {
 
-	protected SecureZone plugin = null;
+	private SecureZone plugin = null;
 
 	/**
 	 * @param plugin
@@ -63,9 +63,9 @@ public class CommandModify implements CommandExecutor {
 					rval = true;
 
 				} catch (final IllegalArgumentException ee) {
-					sender.sendMessage(ChatColor.LIGHT_PURPLE + 
-							"Invalid zone type. Use one of: " + 
-							ZoneType.getPrettyList());
+					sender.sendMessage(ChatColor.LIGHT_PURPLE
+							+ "Invalid zone type. Use one of: "
+							+ ZoneType.getPrettyList());
 				}
 			} else {
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Unknown zone "

@@ -13,17 +13,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * @author IBCodin
+ * CommandExecutor for /securezonevisit
  * 
- *         CommandExecutor for /securezonevisit
+ * @author IBCodin
  */
 public class CommandVisit implements CommandExecutor {
 
-	protected SecureZone plugin = null;
+	private SecureZone plugin = null;
 
-	final protected String zoneIgnorePermission = new String(
+	final private String zoneIgnorePermission = new String(
 			"securezone.ignorezones");
-	final protected String zoneTPInPrefix = new String("securezone.tpin.");
+	final private String zoneTPInPrefix = new String("securezone.tpin.");
 
 	/**
 	 * @param plugin

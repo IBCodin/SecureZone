@@ -4,7 +4,9 @@
 package me.ibcodin.plugins.securezone;
 
 /**
- * @author IBCodin Represents a single SecureZone
+ * Represents a single SecureZone
+ * 
+ * @author IBCodin
  */
 public class SecureZoneZone {
 

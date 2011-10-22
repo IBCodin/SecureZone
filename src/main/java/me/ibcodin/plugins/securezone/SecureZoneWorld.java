@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author IBCodin Container to hold all of the zones for a specific world
+ * Container to hold all of the zones for a specific world
+ * 
+ * @author IBCodin
  */
 public class SecureZoneWorld {
 	/**
