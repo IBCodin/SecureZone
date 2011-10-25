@@ -6,6 +6,7 @@ main: me.ibcodin.plugins.securezone.SecureZone
 database: false
 startup: postworld
 depend: [WorldEdit]
+dev-url: http://dev.bukkit.org/server-mods/secure-zone/
 commands:
     securezone:
         description: Provide plugin help
