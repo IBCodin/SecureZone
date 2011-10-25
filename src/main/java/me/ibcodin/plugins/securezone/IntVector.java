@@ -14,7 +14,7 @@ public class IntVector {
 	private int x, y, z;
 
 	/**
-	 * Empty constuctor (all points are zero)
+	 * Empty constructor (all points are zero)
 	 */
 	public IntVector() {
 		x = 0;
@@ -39,19 +39,20 @@ public class IntVector {
 	}
 
 	/**
-	 * Ask this point if it is contained with the AABB (Axis Aligned Boundig
+	 * Ask this point if it is contained with the AABB (Axis Aligned Bounding
 	 * Box)
 	 * 
 	 * @param min
 	 *            One corner of the box (The one with the lowest value for each
 	 *            coordinate)
 	 * @param max
-	 *            Other corner (with the maximum values for each coordinat)
+	 *            Other corner (with the maximum values for each coordinate)
 	 * @return true if point is within the box This is determined by comparing
-	 *         each of the coordiates of this IntVector with the coordinates of
+	 *         each of the coordinates of this IntVector with the coordinates of
 	 *         the corners. If all three coordinates of this IntVector lie
-	 *         between the min and max, this point is 'in the box'.
+	 *         between the min and max, this point is 'in the box.'
 	 */
+	@SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
 	public boolean isInAABB(IntVector min, IntVector max) {
 		return (x >= min.x) && (x <= max.x) && (y >= min.y) && (y <= max.y)
 				&& (z >= min.z) && (z <= max.z);

@@ -21,9 +21,8 @@ public class CommandVisit implements CommandExecutor {
 
 	private SecureZone plugin = null;
 
-	final private String zoneIgnorePermission = new String(
-			"securezone.ignorezones");
-	final private String zoneTPInPrefix = new String("securezone.tpin.");
+	final private String zoneIgnorePermission = "securezone.ignorezones";
+	final private String zoneTPInPrefix = "securezone.tpin.";
 
 	/**
 	 * @param plugin

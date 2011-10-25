@@ -74,7 +74,7 @@ public class CommandList implements CommandExecutor {
 
 		for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
 				.getList()) {
-			zones.get(zone.getType()).append(zone.getName() + ", ");
+			zones.get(zone.getType()).append(zone.getName()).append(", ");
 		}
 
 		for (final ZoneType zti : ztypes) {

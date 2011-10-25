@@ -19,7 +19,7 @@ public enum ZoneType {
 	 */
 	KEEPIN("KeepIn");
 
-	String pretty;
+	private String pretty;
 
 	ZoneType(String p) {
 		pretty = p;
@@ -40,7 +40,7 @@ public enum ZoneType {
 	public static String getPrettyList() {
 		final StringBuilder bld = new StringBuilder();
 		for (final ZoneType zti : values()) {
-			bld.append(zti.pretty + ", ");
+			bld.append(zti.getPretty()).append(", ");
 		}
 		bld.setLength(bld.length() - 2);
 		return bld.toString();

@@ -6,7 +6,6 @@ package me.ibcodin.plugins.securezone.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * CommandExecutor for /securezone (the help)
@@ -23,12 +22,8 @@ public class CommandHelp implements org.bukkit.command.CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		// TODO Auto-generated method stub
 
-		String fmt = new String("%s - %s");
-		if (sender instanceof Player) {
-			fmt = new String(ChatColor.RED + "%s" + ChatColor.WHITE + " - %s");
-		}
+		String fmt = ChatColor.RED + "%s" + ChatColor.WHITE + " - %s";
 
 		sender.sendMessage(String.format(fmt, "/securezone",
 				"Generate help list"));

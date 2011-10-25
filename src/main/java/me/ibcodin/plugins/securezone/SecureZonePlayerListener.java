@@ -100,15 +100,14 @@ public class SecureZonePlayerListener extends PlayerListener {
 		if (plugin.isWorld(worldname)) {
 			for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
 					.getList()) {
-				if (zone.getType() == ZoneType.KEEPOUT) {
-					if (zone.zoneContains(tvec)) {
-						final String perm = zonePrefix.concat(zone.getName());
-						if (!player.hasPermission(perm)) {
-							player.sendMessage(ChatColor.LIGHT_PURPLE
-									+ "Zone Entry Not Authorized");
-							rval = true;
-							break;
-						}
+				if ((zone.getType() == ZoneType.KEEPOUT) 
+						&& (zone.zoneContains(tvec))) {
+					final String perm = zonePrefix.concat(zone.getName());
+					if (!player.hasPermission(perm)) {
+						player.sendMessage(ChatColor.LIGHT_PURPLE
+								+ "Zone Entry Not Authorized");
+						rval = true;
+						break;
 					}
 				}
 			}
@@ -136,15 +135,14 @@ public class SecureZonePlayerListener extends PlayerListener {
 			for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
 					.getList()) {
 
-				if (zone.getType() == ZoneType.KEEPIN) {
-					if (zone.zoneContains(fvec)) {
-						final String perm = zonePrefix.concat(zone.getName());
-						if (!player.hasPermission(perm)) {
-							player.sendMessage(ChatColor.LIGHT_PURPLE
-									+ "Zone Exit Not Authorized");
-							rval = true;
-							break;
-						}
+				if ((zone.getType() == ZoneType.KEEPIN) 
+						&& (zone.zoneContains(fvec))) {
+					final String perm = zonePrefix.concat(zone.getName());
+					if (!player.hasPermission(perm)) {
+						player.sendMessage(ChatColor.LIGHT_PURPLE
+								+ "Zone Exit Not Authorized");
+						rval = true;
+						break;
 					}
 				}
 			}
@@ -208,32 +206,30 @@ public class SecureZonePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (!event.getPlayer().hasPermission(zoneIgnorePermission)) {
-			if (testZones(event.getPlayer(), event.getFrom(), event.getTo())) {
-				// For move events -- relocate them to the center of the block
-				// they came from
-				final Location newloc = event.getFrom();
-				newloc.setX(newloc.getBlockX() + 0.5);
-				newloc.setY(newloc.getBlockY());
-				newloc.setZ(newloc.getBlockZ() + 0.5);
-				event.setTo(newloc);
-				// event.setCancelled(true);
-			}
+		if ((!event.getPlayer().hasPermission(zoneIgnorePermission)) 
+				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {
+			// For move events -- relocate them to the center of the block
+			// they came from
+			final Location newloc = event.getFrom();
+			newloc.setX(newloc.getBlockX() + 0.5);
+			newloc.setY(newloc.getBlockY());
+			newloc.setZ(newloc.getBlockZ() + 0.5);
+			event.setTo(newloc);
+			// event.setCancelled(true);
 		}
 	}
 
 	@Override
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
-		if (!event.getPlayer().hasPermission(zoneIgnorePermission)) {
-			if (testZones(event.getPlayer(), event.getFrom(), event.getTo())) {
-				// Location newloc = event.getFrom();
-				// newloc.setX(newloc.getBlockX() + 0.5);
-				// newloc.setY(newloc.getBlockY());
-				// newloc.setZ(newloc.getBlockZ() + 0.5);
-				// event.setTo(newloc);
-				// For teleport events, cancel and leave them where they were
-				event.setCancelled(true);
-			}
+		if ((!event.getPlayer().hasPermission(zoneIgnorePermission)) 
+				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {
+			// Location newloc = event.getFrom();
+			// newloc.setX(newloc.getBlockX() + 0.5);
+			// newloc.setY(newloc.getBlockY());
+			// newloc.setZ(newloc.getBlockZ() + 0.5);
+			// event.setTo(newloc);
+			// For teleport events, cancel and leave them where they were
+			event.setCancelled(true);
 		}
 	}
 }

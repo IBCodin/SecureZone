@@ -28,7 +28,7 @@ public class SecureZone extends JavaPlugin {
 
 	private final HashMap<String, SecureZoneZone> zoneMap = new HashMap<String, SecureZoneZone>();
 
-	private final Logger logger = Logger.getLogger("Minecraft.SecureZone");
+	private static final Logger logger = Logger.getLogger("Minecraft.SecureZone");
 
 	/**
 	 * This list of words maps to 'already defined' permissions so these would
@@ -170,7 +170,7 @@ public class SecureZone extends JavaPlugin {
 	 *            The message to log
 	 */
 	public void log(Level level, String message) {
-		logger.log(level, "[SecureZone] " + message);
+		logger.log(level, "[SecureZone] {0}", message);
 	}
 
 	// /**
@@ -194,9 +194,8 @@ public class SecureZone extends JavaPlugin {
 	}
 
 	@Override
+	@SuppressWarnings("ResultOfObjectAllocationIgnored")
 	public void onEnable() {
-		// TODO: Place any custom enable code here, such as registering events
-
 		log(Level.INFO, "Starting onEnable");
 
 		final FileConfiguration config = getConfig();
@@ -249,7 +248,7 @@ public class SecureZone extends JavaPlugin {
 		getCommand("securezonelist").setExecutor(new CommandList(this));
 		getCommand("securezonemodify").setExecutor(new CommandModify(this));
 		getCommand("securezonevisit").setExecutor(new CommandVisit(this));
-
+		
 		new SecureZonePlayerListener(this);
 
 		System.out.println("[" + this + "] is now enabled!");

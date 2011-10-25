@@ -87,16 +87,16 @@ public class SecureZoneZone {
 		int x2 = 0;
 		int y2 = 0;
 		int z2 = 0;
-		ZoneType ztype;
+		ZoneType iztype;
 
 		final String fields[] = data.split(",");
 
 		int fi = 0;
 		if (fields.length == 7) {
-			ztype = ZoneType.valueOf(fields[0].toUpperCase());
+			iztype = ZoneType.valueOf(fields[0].toUpperCase());
 			fi = 1;
 		} else {
-			ztype = ZoneType.KEEPOUT;
+			iztype = ZoneType.KEEPOUT;
 		}
 		if (fields.length == (6 + fi)) {
 			x1 = Integer.parseInt(fields[fi]);
@@ -106,7 +106,7 @@ public class SecureZoneZone {
 			y2 = Integer.parseInt(fields[fi + 4]);
 			z2 = Integer.parseInt(fields[fi + 5]);
 		}
-		initdata(name, wname, ztype, x1, y1, z1, x2, y2, z2);
+		initdata(name, wname, iztype, x1, y1, z1, x2, y2, z2);
 	}
 
 	/**
