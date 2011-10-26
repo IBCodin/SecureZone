@@ -21,10 +21,15 @@ public class CommandVisit implements CommandExecutor {
 
 	private SecureZone plugin = null;
 
-	final private String zoneIgnorePermission = "securezone.ignorezones";
-	final private String zoneTPInPrefix = "securezone.tpin.";
+    final static private String zoneIgnorePermission;
+    final static private String zonePrefix;
 
-	/**
+    static {
+        zoneIgnorePermission = "securezone.ignorezones";
+        zonePrefix = "securezone.";
+    }
+
+    /**
 	 * @param plugin
 	 *            Reference to SecureZone plugin
 	 */
@@ -32,55 +37,54 @@ public class CommandVisit implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 
 		if (sender instanceof Player) {
-			final Player psender = (Player) sender;
+			final Player player = (Player) sender;
 
 			if (args.length == 1) {
-				final String zname = args[0];
+				final String zoneName = args[0];
 
-				final SecureZoneZone zone = plugin.getZone(zname);
+				final SecureZoneZone zone = plugin.getZone(zoneName);
 
 				if (zone != null) {
 					if (sender.hasPermission(zoneIgnorePermission)
-							|| sender.hasPermission(zoneTPInPrefix
+							|| sender.hasPermission(zonePrefix
 									+ zone.getName())) {
 
-						final IntVector vvec = zone.visitloc();
+						final IntVector visitVector = zone.visitloc();
 
 						final World world = plugin.getServer().getWorld(
 								zone.getWorld());
 						if (world != null) {
 
 							// this block is at the 'center' of the zone
-							Block tblock = world.getBlockAt(vvec.getX(),
-									vvec.getY(), vvec.getZ());
+							Block toBlock = world.getBlockAt(visitVector.getX(),
+                                    visitVector.getY(), visitVector.getZ());
 
 							// move down until the block below us is solid
-							Block nblock = tblock.getRelative(BlockFace.DOWN);
-							int testid = nblock.getTypeId();
-							while ((testid == 0)
-									|| ((testid > 7) && (testid < 12))) {
-								tblock = nblock;
-								nblock = tblock.getRelative(BlockFace.DOWN);
-								testid = nblock.getTypeId();
+							Block nextBlock = toBlock.getRelative(BlockFace.DOWN);
+							int nextBlockTypeId = nextBlock.getTypeId();
+							while ((nextBlockTypeId == 0)
+									|| ((nextBlockTypeId > 7) && (nextBlockTypeId < 12))) {
+								toBlock = nextBlock;
+								nextBlock = toBlock.getRelative(BlockFace.DOWN);
+								nextBlockTypeId = nextBlock.getTypeId();
 							}
 
 							// move up until we have 2 clear blocks (to stand
 							// in)
-							nblock = tblock.getRelative(BlockFace.UP);
-							while ((tblock.getTypeId() != 0)
-									|| (nblock.getTypeId() != 0)) {
-								tblock = nblock;
-								nblock = tblock.getRelative(BlockFace.UP);
+							nextBlock = toBlock.getRelative(BlockFace.UP);
+							while ((toBlock.getTypeId() != 0)
+									|| (nextBlock.getTypeId() != 0)) {
+								toBlock = nextBlock;
+								nextBlock = toBlock.getRelative(BlockFace.UP);
 							}
 
-							// tblock should be at the lowest point with 2
+							// toBlock should be at the lowest point with 2
 							// spaces over it (I hope)
-							psender.teleport(tblock.getLocation());
+							player.teleport(toBlock.getLocation());
 						} else {
 							sender.sendMessage("Zone: " + zone.getName()
 									+ " World: " + zone.getWorld()
@@ -93,7 +97,7 @@ public class CommandVisit implements CommandExecutor {
 					}
 
 				} else {
-					sender.sendMessage("Unknown zone " + zname);
+					sender.sendMessage("Unknown zone " + zoneName);
 				}
 			} else {
 				sender.sendMessage("Zone names are a single word");

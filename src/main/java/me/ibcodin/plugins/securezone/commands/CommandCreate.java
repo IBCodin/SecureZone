@@ -40,7 +40,6 @@ public class CommandCreate implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 
@@ -51,7 +50,7 @@ public class CommandCreate implements CommandExecutor {
 			return false;
 		}
 
-		final Player psender = (Player) sender;
+		final Player player = (Player) sender;
 
 		if ((args.length < 1) || (args.length > 2)) {
 			sender.sendMessage("This command requires a one word zone name.");
@@ -59,28 +58,28 @@ public class CommandCreate implements CommandExecutor {
 			return false;
 		}
 
-		final String zname = args[0];
+		final String zoneName = args[0];
 
 		// Test for 'invalid' zone names that match command names/permissions
 		for (final String rw : plugin.reservedWords) {
-			if (zname.equalsIgnoreCase(rw)) {
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + zname
+			if (zoneName.equalsIgnoreCase(rw)) {
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + zoneName
 						+ "is a reserved name. Choose another name.");
 				return false;
 			}
 		}
 
-		if (plugin.isZone(zname)) {
-			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Zone exists: " + zname
+		if (plugin.isZone(zoneName)) {
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Zone exists: " + zoneName
 					+ ". Choose another name.");
 			return false;
 		}
 
-		ZoneType ztype = ZoneType.KEEPOUT;
+		ZoneType zone_type = ZoneType.KEEPOUT;
 
 		if (args.length > 1) {
 			try {
-				ztype = ZoneType.valueOf(args[1].toUpperCase());
+				zone_type = ZoneType.valueOf(args[1].toUpperCase());
 			} catch (final IllegalArgumentException ee) {
 				sender.sendMessage(ChatColor.LIGHT_PURPLE
 						+ "Invalid zone type. Use one of: "
@@ -89,8 +88,8 @@ public class CommandCreate implements CommandExecutor {
 			}
 		}
 
-		final LocalSession session = weapi.getSession(psender);
-		final LocalWorld world = new BukkitWorld(psender.getWorld());
+		final LocalSession session = weapi.getSession(player);
+		final LocalWorld world = new BukkitWorld(player.getWorld());
 
 		if (!session.isSelectionDefined(world)) {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE
@@ -99,16 +98,16 @@ public class CommandCreate implements CommandExecutor {
 		}
 
 		try {
-			final Region selregion = session.getSelection(world);
+			final Region selectedRegion = session.getSelection(world);
 
-			final String wname = psender.getWorld().getName();
+			final String worldName = player.getWorld().getName();
 
-			plugin.addZone(new SecureZoneZone(zname, wname, ztype, selregion
-					.getMinimumPoint(), selregion.getMaximumPoint()));
-			sender.sendMessage("Zone: " + zname
+			plugin.addZone(new SecureZoneZone(zoneName, worldName, zone_type, selectedRegion
+                    .getMinimumPoint(), selectedRegion.getMaximumPoint()));
+			sender.sendMessage("Zone: " + zoneName
 					+ " created from the WorldEdit selection");
 			plugin.log(Level.INFO, sender.getName() + ": created zone: "
-					+ zname);
+					+ zoneName);
 
 		} catch (final IncompleteRegionException ee) {
 			sender.sendMessage("The current region selection is incomplete.");
@@ -118,9 +117,6 @@ public class CommandCreate implements CommandExecutor {
 		return true;
 	}
 
-	/**
-	 * @throws CommandException
-	 */
 	private void initWEAPI() throws CommandException {
 		if (weapi == null) {
 			final Plugin weplug = plugin.getServer().getPluginManager()

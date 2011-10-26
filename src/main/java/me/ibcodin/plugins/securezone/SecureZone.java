@@ -91,8 +91,7 @@ public class SecureZone extends JavaPlugin {
 	 *         return null if the zone is unknown.
 	 */
 	public SecureZoneZone getZone(String zonename) {
-		final SecureZoneZone rval = zoneMap.get(zonename.toLowerCase());
-		return rval;
+        return zoneMap.get(zonename.toLowerCase());
 	}
 
 	/**
@@ -182,7 +181,6 @@ public class SecureZone extends JavaPlugin {
 	// return getZoneWorld(test.getWorld().getName());
 	// }
 
-	@Override
 	public void onDisable() {
 		// The config on disk should be current
 
@@ -193,52 +191,51 @@ public class SecureZone extends JavaPlugin {
 		System.out.println("[" + this + "] is now disabled!");
 	}
 
-	@Override
 	@SuppressWarnings("ResultOfObjectAllocationIgnored")
 	public void onEnable() {
 		log(Level.INFO, "Starting onEnable");
 
-		final FileConfiguration config = getConfig();
+		final FileConfiguration config;
+        config = getConfig();
+        assert config != null;
 
-		if (config == null) {
-			log(Level.WARNING, "getConfig returned null");
-		} else {
-			final ConfigurationSection worlds = config
-					.getConfigurationSection("worlds");
-			if (worlds == null) {
-				log(Level.INFO, "No Zones Defined");
-			} else {
-				// the false here means don't get sub keys
-				final Set<String> wkeys = worlds.getKeys(false);
-				if (wkeys.isEmpty()) {
-					log(Level.INFO, "No Zones Defined");
-				}
-				for (final String worldname : wkeys) {
-					log(Level.INFO, worldname + ": Loading zones");
+        final ConfigurationSection worlds;
+        worlds = config.getConfigurationSection("worlds");
+        if (worlds == null) {
+            log(Level.INFO, "No Zones Defined");
+        } else {
+            final Set<String> wkeys;
+            wkeys = worlds.getKeys(false);      // false- don't get sub keys
+            if (wkeys.isEmpty()) {
+                log(Level.INFO, "No Zones Defined");
+            }
+            for (String worldname : wkeys) {
+                log(Level.INFO, worldname + ": Loading zones");
 
-					final ConfigurationSection aworld = worlds
-							.getConfigurationSection(worldname);
-					for (final String zonename : aworld.getKeys(false)) {
-						final String zonedata = aworld.getString(zonename);
-						final SecureZoneZone szone = new SecureZoneZone(
-								zonename, worldname, zonedata);
-						if (szone.isValid()) {
-							log(Level.INFO, zonename + ": loaded");
-							// Don't call this.addZone(zone) as it would try to
-							// update the config
-							final SecureZoneWorld world = getZoneWorld(szone
-									.getWorld());
-							zoneMap.put(szone.getName().toLowerCase(), szone);
-							world.addZone(szone);
-						} else {
-							log(Level.WARNING, zonename + ": improperly formed");
-						}
-					}
-				}
-			}
-		}
+                final ConfigurationSection aworld;
+                aworld = worlds.getConfigurationSection(worldname);
 
-		config.options().copyDefaults(true);
+                for (String zonename : aworld.getKeys(false)) {
+                    final String zonedata;
+                    zonedata = aworld.getString(zonename);
+                    final SecureZoneZone szone;
+                    szone = new SecureZoneZone(zonename, worldname, zonedata);
+                    if (szone.isValid()) {
+                        log(Level.INFO, zonename + ": loaded");
+                        // Don't call this.addZone(zone) as it would try to
+                        // update the config we're parsing
+                        final SecureZoneWorld world;
+                        world = getZoneWorld(szone.getWorld());
+                        zoneMap.put(szone.getName().toLowerCase(), szone);
+                        world.addZone(szone);
+                    } else {
+                        log(Level.WARNING, zonename + ": improperly formed");
+                    }
+                }
+            }
+        }
+
+        config.options().copyDefaults(true);
 
 		saveConfig();
 

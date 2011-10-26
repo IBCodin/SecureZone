@@ -10,17 +10,17 @@ package me.ibcodin.plugins.securezone;
  */
 public class SecureZoneZone {
 
-	private String zname;
-	private String wname;
+	private String zoneName;
+	private String worldName;
 	private IntVector vmin;
 	private IntVector vmax;
 	private ZoneType ztype;
 	private boolean valid;
 
-	private void initdata(String zname, String wname, ZoneType ztype, int x1,
+	private void initdata(String zoneName, String worldName, ZoneType ztype, int x1,
 			int y1, int z1, int x2, int y2, int z2) {
-		this.zname = zname;
-		this.wname = wname;
+		this.zoneName = zoneName;
+		this.worldName = worldName;
 		this.ztype = ztype;
 		vmin = new IntVector(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1,
 				z2));
@@ -29,32 +29,13 @@ public class SecureZoneZone {
 		valid = vmin != vmax;
 	}
 
-	// public SecureZoneZone(String name, String wname, double x1, double y1,
-	// double z1, double x2, double y2, double z2) {
-	// initdata(name, wname, x1, y1, z1, x2, y2, z2);
-	// }
-
-	// /**
-	// * @param name
-	// * @param wname
-	// * @param ztype
-	// * @param p1
-	// * @param p2
-	// */
-	// public SecureZoneZone(String name, String wname, ZoneType ztype, Vector
-	// p1,
-	// Vector p2) {
-	// initdata(name, wname, ztype, p1.getBlockX(), p1.getBlockY(),
-	// p1.getBlockZ(), p2.getBlockX(), p2.getBlockY(), p2.getBlockZ());
-	// }
-
 	/**
 	 * Create a SecureZoneZone from parameters and vectors from a WorldEdit
 	 * Region
 	 * 
 	 * @param name
 	 *            Zone name
-	 * @param wname
+	 * @param worldName
 	 *            World name
 	 * @param ztype
 	 *            The type of zone to create
@@ -63,9 +44,9 @@ public class SecureZoneZone {
 	 * @param p2
 	 *            The second vector (usually maximum)
 	 */
-	public SecureZoneZone(String name, String wname, ZoneType ztype,
+	public SecureZoneZone(String name, String worldName, ZoneType ztype,
 			com.sk89q.worldedit.Vector p1, com.sk89q.worldedit.Vector p2) {
-		initdata(name, wname, ztype, p1.getBlockX(), p1.getBlockY(),
+		initdata(name, worldName, ztype, p1.getBlockX(), p1.getBlockY(),
 				p1.getBlockZ(), p2.getBlockX(), p2.getBlockY(), p2.getBlockZ());
 	}
 
@@ -75,12 +56,12 @@ public class SecureZoneZone {
 	 * 
 	 * @param name
 	 *            Zone name
-	 * @param wname
+	 * @param worldName
 	 *            World name
 	 * @param data
 	 *            the string data to use
 	 */
-	public SecureZoneZone(String name, String wname, String data) {
+	public SecureZoneZone(String name, String worldName, String data) {
 		int x1 = 0;
 		int y1 = 0;
 		int z1 = 0;
@@ -106,12 +87,12 @@ public class SecureZoneZone {
 			y2 = Integer.parseInt(fields[fi + 4]);
 			z2 = Integer.parseInt(fields[fi + 5]);
 		}
-		initdata(name, wname, iztype, x1, y1, z1, x2, y2, z2);
+		initdata(name, worldName, iztype, x1, y1, z1, x2, y2, z2);
 	}
 
 	/**
 	 * Provide a string representation of the zone, compatible with the data
-	 * argument for SecureZoneZone(String name, String wname, String data)
+	 * argument for SecureZoneZone(String name, String worldName, String data)
 	 * 
 	 * @return string representation
 	 */
@@ -146,14 +127,14 @@ public class SecureZoneZone {
 	 * @return Zone name
 	 */
 	public String getName() {
-		return zname;
+		return zoneName;
 	}
 
 	/**
 	 * @return World name
 	 */
 	public String getWorld() {
-		return wname;
+		return worldName;
 	}
 
 	/**
@@ -166,11 +147,11 @@ public class SecureZoneZone {
 	/**
 	 * Change the type of a zone
 	 * 
-	 * @param newtype
+	 * @param newType
 	 *            The type to change to
 	 */
-	public void changeType(ZoneType newtype) {
-		ztype = newtype;
+	public void changeType(ZoneType newType) {
+		ztype = newType;
 	}
 
 	/**

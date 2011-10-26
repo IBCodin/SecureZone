@@ -21,9 +21,8 @@ public class SecureZonePlayerListener extends PlayerListener {
 
 	private final SecureZone plugin;
 
-	final private String zoneIgnorePermission = new String(
-			"securezone.ignorezones");
-	final private String zonePrefix = new String("securezone.");
+	final private String zoneIgnorePermission = "securezone.ignorezones";
+	final private String zonePrefix = "securezone.";
 
 	// Additional permissions:
 
@@ -58,24 +57,28 @@ public class SecureZonePlayerListener extends PlayerListener {
 	private boolean testZones(Player ply, Location from, Location to) {
 		boolean rval = false;
 
-		final String fworld = from.getWorld().getName();
-		final String tworld = to.getWorld().getName();
+		final String fromWorld;
+        final String toWorld;
 
-		final IntVector fvec = new IntVector(from.getBlockX(),
-				from.getBlockY(), from.getBlockZ());
-		final IntVector tvec = new IntVector(to.getBlockX(), to.getBlockY(),
-				to.getBlockZ());
+        fromWorld = from.getWorld().getName();
+        toWorld = to.getWorld().getName();
 
-		// Vector velocity = ply.getVelocity();
+        final IntVector fromVector;
+        final IntVector toVector;
+
+        fromVector = new IntVector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
+        toVector = new IntVector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
+
+        // Vector velocity = ply.getVelocity();
 		// ply.setVelocity(velocity);
 
-		if (fworld != tworld) {
+		if (!fromWorld.equals(toWorld)) {
 			// the from and to worlds are different
-			rval = testFromWorld(ply, fworld, fvec)
-					|| testToWorld(ply, tworld, tvec);
-		} else if (fvec != tvec) {
+			rval = testFromWorld(ply, fromWorld, fromVector)
+					|| testToWorld(ply, toWorld, toVector);
+		} else if (fromVector != toVector) {
 			// we moved at least one block physically
-			rval = testOneWold(ply, fworld, fvec, tvec);
+			rval = testOneWold(ply, fromWorld, fromVector, toVector);
 		}
 
 		return rval;
@@ -86,22 +89,22 @@ public class SecureZonePlayerListener extends PlayerListener {
 	 * 
 	 * @param player
 	 *            Player making the move
-	 * @param worldname
+	 * @param worldName
 	 *            name of the world to test in
-	 * @param tvec
+	 * @param toVector
 	 *            to location
 	 * @return true if the move should be cancelled
 	 */
-	private boolean testToWorld(Player player, final String worldname,
-			final IntVector tvec) {
+	private boolean testToWorld(Player player, final String worldName,
+			final IntVector toVector) {
 		boolean rval = false;
 		// check the tos
 		// get the world
-		if (plugin.isWorld(worldname)) {
-			for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
+		if (plugin.isWorld(worldName)) {
+			for (final SecureZoneZone zone : plugin.getZoneWorld(worldName)
 					.getList()) {
 				if ((zone.getType() == ZoneType.KEEPOUT) 
-						&& (zone.zoneContains(tvec))) {
+						&& (zone.zoneContains(toVector))) {
 					final String perm = zonePrefix.concat(zone.getName());
 					if (!player.hasPermission(perm)) {
 						player.sendMessage(ChatColor.LIGHT_PURPLE
@@ -120,23 +123,23 @@ public class SecureZonePlayerListener extends PlayerListener {
 	 * 
 	 * @param player
 	 *            Player making the move
-	 * @param worldname
+	 * @param worldName
 	 *            name of the world to test in
-	 * @param fvec
+	 * @param fromVector
 	 *            from location
 	 * @return true if the move should be cancelled
 	 */
-	private boolean testFromWorld(Player player, final String worldname,
-			final IntVector fvec) {
+	private boolean testFromWorld(Player player, final String worldName,
+			final IntVector fromVector) {
 		boolean rval = false;
-		// check the froms
+		// check the zones in the world we are moving from
 		// get the world
-		if (plugin.isWorld(worldname)) {
-			for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
+		if (plugin.isWorld(worldName)) {
+			for (final SecureZoneZone zone : plugin.getZoneWorld(worldName)
 					.getList()) {
 
 				if ((zone.getType() == ZoneType.KEEPIN) 
-						&& (zone.zoneContains(fvec))) {
+						&& (zone.zoneContains(fromVector))) {
 					final String perm = zonePrefix.concat(zone.getName());
 					if (!player.hasPermission(perm)) {
 						player.sendMessage(ChatColor.LIGHT_PURPLE
@@ -155,24 +158,24 @@ public class SecureZonePlayerListener extends PlayerListener {
 	 * 
 	 * @param player
 	 *            Player making the move
-	 * @param worldname
+	 * @param worldName
 	 *            name of the world to test in
-	 * @param fvec
+	 * @param fromVector
 	 *            from location
-	 * @param tvec
+	 * @param toVector
 	 *            to location
 	 * @return true if the move should be cancelled
 	 */
-	private boolean testOneWold(Player player, final String worldname,
-			final IntVector fvec, final IntVector tvec) {
+	private boolean testOneWold(Player player, final String worldName,
+			final IntVector fromVector, final IntVector toVector) {
 		boolean rval = false;
 		// get the world
-		if (plugin.isWorld(worldname)) {
+		if (plugin.isWorld(worldName)) {
 
-			for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
+			for (final SecureZoneZone zone : plugin.getZoneWorld(worldName)
 					.getList()) {
-				final boolean fin = zone.zoneContains(fvec);
-				final boolean tin = zone.zoneContains(tvec);
+				final boolean fin = zone.zoneContains(fromVector);
+				final boolean tin = zone.zoneContains(toVector);
 
 				if (fin && !tin && (zone.getType() == ZoneType.KEEPIN)) {
 					// from is in, to is not -- we're moving out
@@ -210,12 +213,12 @@ public class SecureZonePlayerListener extends PlayerListener {
 				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {
 			// For move events -- relocate them to the center of the block
 			// they came from
-			final Location newloc = event.getFrom();
-			newloc.setX(newloc.getBlockX() + 0.5);
-			newloc.setY(newloc.getBlockY());
-			newloc.setZ(newloc.getBlockZ() + 0.5);
-			event.setTo(newloc);
-			// event.setCancelled(true);
+			final Location newTarget;
+            newTarget = event.getFrom();
+            newTarget.setX(newTarget.getBlockX() + 0.5);
+			newTarget.setY(newTarget.getBlockY());
+			newTarget.setZ(newTarget.getBlockZ() + 0.5);
+			event.setTo(newTarget);
 		}
 	}
 
@@ -223,11 +226,6 @@ public class SecureZonePlayerListener extends PlayerListener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		if ((!event.getPlayer().hasPermission(zoneIgnorePermission)) 
 				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {
-			// Location newloc = event.getFrom();
-			// newloc.setX(newloc.getBlockX() + 0.5);
-			// newloc.setY(newloc.getBlockY());
-			// newloc.setZ(newloc.getBlockZ() + 0.5);
-			// event.setTo(newloc);
 			// For teleport events, cancel and leave them where they were
 			event.setCancelled(true);
 		}

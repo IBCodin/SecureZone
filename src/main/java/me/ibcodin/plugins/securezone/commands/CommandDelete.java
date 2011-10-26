@@ -26,25 +26,24 @@ public class CommandDelete implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 
 		boolean rval = false;
 
 		if (args.length == 1) {
-			final String zname = args[0];
+			final String zoneName = args[0];
 
-			final SecureZoneZone zone = plugin.getZone(zname);
+			final SecureZoneZone zone = plugin.getZone(zoneName);
 
 			if (zone != null) {
 				plugin.delZone(zone);
-				sender.sendMessage("Zone: " + zname + " deleted");
+				sender.sendMessage("Zone: " + zoneName + " deleted");
 				plugin.log(Level.INFO, sender.getName() + ": deleted zone: "
-						+ zname);
+						+ zoneName);
 				rval = true;
 			} else {
-				sender.sendMessage("The zone name " + zname + " was not found.");
+				sender.sendMessage("The zone name " + zoneName + " was not found.");
 			}
 		} else {
 			sender.sendMessage("Zone names are a single word.");

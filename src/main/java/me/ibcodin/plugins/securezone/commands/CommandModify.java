@@ -38,28 +38,27 @@ public class CommandModify implements CommandExecutor {
 	 * org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender
 	 * , org.bukkit.command.Command, java.lang.String, java.lang.String[])
 	 */
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		boolean rval = false;
 
 		if (args.length == 2) {
-			final String zonename = args[0];
+			final String zoneName = args[0];
 
-			if (plugin.isZone(zonename)) {
+			if (plugin.isZone(zoneName)) {
 				try {
-					final ZoneType ztype = ZoneType.valueOf(args[1]
+					final ZoneType zone_type = ZoneType.valueOf(args[1]
 							.toUpperCase());
 
-					final SecureZoneZone zone = plugin.getZone(zonename);
-					zone.changeType(ztype);
+					final SecureZoneZone zone = plugin.getZone(zoneName);
+					zone.changeType(zone_type);
 					plugin.updateZone(zone);
 
-					sender.sendMessage("Zone: " + zonename + " changed to "
-							+ ztype.toString());
+					sender.sendMessage("Zone: " + zoneName + " changed to "
+                            + zone_type.toString());
 					plugin.log(Level.INFO,
-							sender.getName() + ": changed zone: " + zonename
-									+ " to: " + ztype.toString());
+                            sender.getName() + ": changed zone: " + zoneName
+                                    + " to: " + zone_type.toString());
 					rval = true;
 
 				} catch (final IllegalArgumentException ee) {
@@ -69,7 +68,7 @@ public class CommandModify implements CommandExecutor {
 				}
 			} else {
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Unknown zone "
-						+ zonename);
+						+ zoneName);
 			}
 		} else {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE

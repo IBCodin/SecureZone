@@ -102,4 +102,8 @@ public class IntVector {
 	public void setZ(int z) {
 		this.z = z;
 	}
+
+    public boolean equals(IntVector other) {
+        return this.x == other.x && this.y == other.y && this.z == other.z;
+    }
 }

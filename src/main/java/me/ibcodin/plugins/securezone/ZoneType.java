@@ -45,4 +45,4 @@ public enum ZoneType {
 		bld.setLength(bld.length() - 2);
 		return bld.toString();
 	}
-};
+}

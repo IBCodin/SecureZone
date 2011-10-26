@@ -19,7 +19,6 @@ public class CommandHelp implements org.bukkit.command.CommandExecutor {
 	public CommandHelp() {
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 

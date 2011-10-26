@@ -31,21 +31,20 @@ public class CommandList implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 
 		if (args.length == 0) {
 			final Set<String> worlds = plugin.getWorldList();
-			for (final String worldname : worlds) {
-				listWorld(sender, worldname);
+			for (final String worldName : worlds) {
+				listWorld(sender, worldName);
 			}
 		} else {
-			final String worldname = args[0];
-			if (plugin.isWorld(worldname)) {
-				listWorld(sender, worldname);
+			final String worldName = args[0];
+			if (plugin.isWorld(worldName)) {
+				listWorld(sender, worldName);
 			} else {
-				sender.sendMessage("The world " + worldname
+				sender.sendMessage("The world " + worldName
 						+ " is unknown or has no zones");
 			}
 		}
@@ -64,11 +63,11 @@ public class CommandList implements CommandExecutor {
 	private void listWorld(CommandSender sender, String worldname) {
 		sender.sendMessage(ChatColor.RED + worldname + ":");
 
-		final ZoneType[] ztypes = ZoneType.values();
+		final ZoneType[] zone_types = ZoneType.values();
 		final EnumMap<ZoneType, StringBuilder> zones = new EnumMap<ZoneType, StringBuilder>(
 				ZoneType.class);
 
-		for (final ZoneType zti : ztypes) {
+		for (final ZoneType zti : zone_types) {
 			zones.put(zti, new StringBuilder());
 		}
 
@@ -77,7 +76,7 @@ public class CommandList implements CommandExecutor {
 			zones.get(zone.getType()).append(zone.getName()).append(", ");
 		}
 
-		for (final ZoneType zti : ztypes) {
+		for (final ZoneType zti : zone_types) {
 			final StringBuilder sti = zones.get(zti);
 			if (sti.length() > 2) {
 				sti.setLength(sti.length() - 2);
