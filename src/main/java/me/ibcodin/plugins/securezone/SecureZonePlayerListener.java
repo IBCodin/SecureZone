@@ -6,9 +6,8 @@ package me.ibcodin.plugins.securezone;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -17,7 +16,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  * 
  * @author IBCodin
  */
-public class SecureZonePlayerListener extends PlayerListener {
+public class SecureZonePlayerListener implements Listener {
 
 	private final SecureZone plugin;
 
@@ -32,15 +31,7 @@ public class SecureZonePlayerListener extends PlayerListener {
 	 */
 	public SecureZonePlayerListener(SecureZone plugin) {
 		this.plugin = plugin;
-
-		// plugin.log(Level.INFO, "Registering for PLAYER_MOVE");
-		plugin.getServer().getPluginManager()
-				.registerEvent(Type.PLAYER_MOVE, this, Priority.Normal, plugin);
-		// plugin.log(Level.INFO, "Registering for PLAYER_TELEPORT");
-		plugin.getServer()
-				.getPluginManager()
-				.registerEvent(Type.PLAYER_TELEPORT, this, Priority.Normal,
-						plugin);
+		plugin.getServer().getPluginManager().registerEvents(this,plugin);
 	}
 
 	/**
@@ -207,7 +198,7 @@ public class SecureZonePlayerListener extends PlayerListener {
 		return rval;
 	}
 
-	@Override
+	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if ((!event.getPlayer().hasPermission(zoneIgnorePermission)) 
 				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {
@@ -222,7 +213,7 @@ public class SecureZonePlayerListener extends PlayerListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		if ((!event.getPlayer().hasPermission(zoneIgnorePermission)) 
 				&& (testZones(event.getPlayer(), event.getFrom(), event.getTo()))) {

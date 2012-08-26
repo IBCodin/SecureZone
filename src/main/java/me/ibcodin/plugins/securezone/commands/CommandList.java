@@ -1,16 +1,15 @@
 package me.ibcodin.plugins.securezone.commands;
 
-import java.util.EnumMap;
-import java.util.Set;
-
 import me.ibcodin.plugins.securezone.SecureZone;
 import me.ibcodin.plugins.securezone.SecureZoneZone;
 import me.ibcodin.plugins.securezone.ZoneType;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.*;
+import static java.lang.String.*;
 
 /**
  * CommandExecutor for /securezonelist
@@ -52,6 +51,18 @@ public class CommandList implements CommandExecutor {
 		return true;
 	}
 
+    public static String join(Collection s, String delimiter) {
+            StringBuilder buffer = new StringBuilder();
+            Iterator iter = s.iterator();
+            while (iter.hasNext()) {
+                buffer.append(iter.next());
+                if (iter.hasNext()) {
+                    buffer.append(delimiter);
+                }
+            }
+            return buffer.toString();
+        }
+
 	/**
 	 * Generate a listing of the zones in a world
 	 * 
@@ -64,23 +75,22 @@ public class CommandList implements CommandExecutor {
 		sender.sendMessage(ChatColor.RED + worldname + ":");
 
 		final ZoneType[] zone_types = ZoneType.values();
-		final EnumMap<ZoneType, StringBuilder> zones = new EnumMap<ZoneType, StringBuilder>(
+		final EnumMap<ZoneType, List<String>> zones = new EnumMap<ZoneType, List<String>>(
 				ZoneType.class);
 
 		for (final ZoneType zti : zone_types) {
-			zones.put(zti, new StringBuilder());
+			zones.put(zti, new ArrayList<String>());
 		}
 
 		for (final SecureZoneZone zone : plugin.getZoneWorld(worldname)
 				.getList()) {
-			zones.get(zone.getType()).append(zone.getName()).append(", ");
+			zones.get(zone.getType()).add(zone.getName());
 		}
 
 		for (final ZoneType zti : zone_types) {
-			final StringBuilder sti = zones.get(zti);
-			if (sti.length() > 2) {
-				sti.setLength(sti.length() - 2);
-				sender.sendMessage(zti.getPretty() + ": " + sti.toString());
+			final List<String> sti = zones.get(zti);
+			if (!sti.isEmpty()) {
+				sender.sendMessage(format("%s: %s", zti.getPretty(), join(sti, ", ")));
 			}
 		}
 	}

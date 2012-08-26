@@ -1,21 +1,15 @@
 package me.ibcodin.plugins.securezone;
 
+import me.ibcodin.plugins.securezone.commands.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import me.ibcodin.plugins.securezone.commands.CommandCreate;
-import me.ibcodin.plugins.securezone.commands.CommandDelete;
-import me.ibcodin.plugins.securezone.commands.CommandHelp;
-import me.ibcodin.plugins.securezone.commands.CommandList;
-import me.ibcodin.plugins.securezone.commands.CommandModify;
-import me.ibcodin.plugins.securezone.commands.CommandVisit;
-
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Base class for the SecureZone plugin
@@ -34,8 +28,27 @@ public class SecureZone extends JavaPlugin {
 	 * This list of words maps to 'already defined' permissions so these would
 	 * make bad zone names
 	 */
-	final public String[] reservedWords = { "admin", "create", "delete",
+	final private static String[] reservedWords = { "admin", "create", "delete",
 			"list", "modify", "visit", "ignorezones" };
+
+
+    /**
+     * Search reserved word list for a name
+     *
+     * @param name
+     *      the name to search for
+     * @return true if name was in reserved word list
+     */
+    public boolean isReserved(String name) {
+        boolean rval = false;
+        String word = name.toLowerCase();
+        for (final String rw: reservedWords) {
+            if (rw.equals(word)) {
+                rval = true;
+            }
+        }
+        return rval;
+    }
 
 	/**
 	 * Search to see if a world is defined
@@ -169,7 +182,7 @@ public class SecureZone extends JavaPlugin {
 	 *            The message to log
 	 */
 	public void log(Level level, String message) {
-		logger.log(level, "[SecureZone] {0}", message);
+		logger.log(level, "[SecureZone] " + message);
 	}
 
 	// /**

@@ -4,6 +4,7 @@ import me.ibcodin.plugins.securezone.IntVector;
 import me.ibcodin.plugins.securezone.SecureZone;
 import me.ibcodin.plugins.securezone.SecureZoneZone;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,71 +41,66 @@ public class CommandVisit implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 
-		if (sender instanceof Player) {
-			final Player player = (Player) sender;
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("You must be an in-game player to run this command.");
+            return false;
+        }
 
-			if (args.length == 1) {
-				final String zoneName = args[0];
+        final Player player = (Player) sender;
 
-				final SecureZoneZone zone = plugin.getZone(zoneName);
+        if (args.length != 1) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "This command requires a one word zone name.");
+            return false;
+        }
 
-				if (zone != null) {
-					if (sender.hasPermission(zoneIgnorePermission)
-							|| sender.hasPermission(zonePrefix
-									+ zone.getName())) {
+        final String zoneName = args[0];
+        final SecureZoneZone zone = plugin.getZone(zoneName);
 
-						final IntVector visitVector = zone.visitloc();
+        if (zone == null) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Unknown zone: " + zoneName);
+            return false;
+        }
 
-						final World world = plugin.getServer().getWorld(
-								zone.getWorld());
-						if (world != null) {
+        if (!sender.hasPermission(zoneIgnorePermission) &&
+                !sender.hasPermission(zonePrefix + zone.getName())) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "No permission to visit zone: " + zone.getName());
+            return false;
+        }
 
-							// this block is at the 'center' of the zone
-							Block toBlock = world.getBlockAt(visitVector.getX(),
-                                    visitVector.getY(), visitVector.getZ());
+        final IntVector visitVector = zone.visitloc();
 
-							// move down until the block below us is solid
-							Block nextBlock = toBlock.getRelative(BlockFace.DOWN);
-							int nextBlockTypeId = nextBlock.getTypeId();
-							while ((nextBlockTypeId == 0)
-									|| ((nextBlockTypeId > 7) && (nextBlockTypeId < 12))) {
-								toBlock = nextBlock;
-								nextBlock = toBlock.getRelative(BlockFace.DOWN);
-								nextBlockTypeId = nextBlock.getTypeId();
-							}
+        final World world = plugin.getServer().getWorld(zone.getWorld());
+        if (world == null) {
+            sender.sendMessage(String.format(ChatColor.LIGHT_PURPLE + "Zone: %s World: %s: World not loaded", zone.getName(), zone.getWorld()));
+            return false;
+        }
 
-							// move up until we have 2 clear blocks (to stand
-							// in)
-							nextBlock = toBlock.getRelative(BlockFace.UP);
-							while ((toBlock.getTypeId() != 0)
-									|| (nextBlock.getTypeId() != 0)) {
-								toBlock = nextBlock;
-								nextBlock = toBlock.getRelative(BlockFace.UP);
-							}
+        // this block is at the 'center' of the zone
+        Block toBlock = world.getBlockAt(visitVector.getX(),
+                visitVector.getY(), visitVector.getZ());
 
-							// toBlock should be at the lowest point with 2
-							// spaces over it (I hope)
-							player.teleport(toBlock.getLocation());
-						} else {
-							sender.sendMessage("Zone: " + zone.getName()
-									+ " World: " + zone.getWorld()
-									+ ": World not loaded");
-						}
+        // move down until the block below us is solid
+        Block nextBlock = toBlock.getRelative(BlockFace.DOWN);
+        int nextBlockTypeId = nextBlock.getTypeId();
+        while ((nextBlockTypeId == 0)
+                || ((nextBlockTypeId > 7) && (nextBlockTypeId < 12))) {
+            toBlock = nextBlock;
+            nextBlock = toBlock.getRelative(BlockFace.DOWN);
+            nextBlockTypeId = nextBlock.getTypeId();
+        }
 
-					} else {
-						sender.sendMessage("Zone: " + zone.getName()
-								+ " : No permission to visit");
-					}
+        // move up until we have 2 clear blocks (to stand
+        // in)
+        nextBlock = toBlock.getRelative(BlockFace.UP);
+        while ((toBlock.getTypeId() != 0)
+                || (nextBlock.getTypeId() != 0)) {
+            toBlock = nextBlock;
+            nextBlock = toBlock.getRelative(BlockFace.UP);
+        }
 
-				} else {
-					sender.sendMessage("Unknown zone " + zoneName);
-				}
-			} else {
-				sender.sendMessage("Zone names are a single word");
-			}
-		} else {
-			sender.sendMessage("This command must be executed by an in-game player.");
-		}
-		return false;
+        // toBlock should be at the lowest point with 2
+        // spaces over it (I hope)
+        player.teleport(toBlock.getLocation());
+        return true;
 	}
 }

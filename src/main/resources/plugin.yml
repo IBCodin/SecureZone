@@ -1,5 +1,5 @@
 name: SecureZone
-version: '0.61'
+version: '0.7'
 author: IBCodin
 description: Restrict players to or from zones 
 main: me.ibcodin.plugins.securezone.SecureZone

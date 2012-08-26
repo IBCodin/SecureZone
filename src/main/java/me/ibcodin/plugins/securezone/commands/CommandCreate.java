@@ -1,11 +1,15 @@
 package me.ibcodin.plugins.securezone.commands;
 
-import java.util.logging.Level;
-
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.LocalWorld;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.bukkit.WorldEditAPI;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.Region;
 import me.ibcodin.plugins.securezone.SecureZone;
 import me.ibcodin.plugins.securezone.SecureZoneZone;
 import me.ibcodin.plugins.securezone.ZoneType;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -14,13 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.LocalWorld;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.bukkit.WorldEditAPI;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.regions.Region;
+import java.util.logging.Level;
 
 /**
  * CommandExecutor for /securezonecreate
@@ -53,20 +51,18 @@ public class CommandCreate implements CommandExecutor {
 		final Player player = (Player) sender;
 
 		if ((args.length < 1) || (args.length > 2)) {
-			sender.sendMessage("This command requires a one word zone name.");
-			sender.sendMessage("You may optionally also supply a zone type.");
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "This command requires a one word zone name.");
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "You may optionally also supply a zone type.");
 			return false;
 		}
 
 		final String zoneName = args[0];
 
 		// Test for 'invalid' zone names that match command names/permissions
-		for (final String rw : plugin.reservedWords) {
-			if (zoneName.equalsIgnoreCase(rw)) {
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + zoneName
-						+ "is a reserved name. Choose another name.");
-				return false;
-			}
+        if (plugin.isReserved(zoneName)) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + zoneName
+                    + "is a reserved name. Choose another name.");
+            return false;
 		}
 
 		if (plugin.isZone(zoneName)) {
